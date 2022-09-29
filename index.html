@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-	<meta charset="utf-8">
-	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-	<meta content="yes" name="apple-mobile-web-app-capable">
-	<meta content="black" name="apple-mobile-web-app-status-bar-style">
-	<meta content="telephone=no" name="format-detection">
-	<meta content="email=no" name="format-detection">
-	<title>Eraser.js</title>
-	<style>
-		html, body{
-		    width: 100%;
-		    margin: 0;
-		    padding: 0;
-		    overflow-x: hidden;
-		    overflow-y: auto;
-		}
-		canvas{
-			width: 100%;
-			max-width: 640px;
-			margin: 0 auto;
-			display: block;
-		}
-	</style>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>Eraser.js</title>
+    <style>
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        canvas {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
 </head>
 <body>
-	<canvas id="canvas"></canvas>
-	<script src="./js/eraser.js"></script>
-	<script>
-		window.addEventListener('load', function(){
-			var canvas = document.querySelector('#canvas'),
-				eraser = new Eraser(canvas, './img/demo.jpg');
-			eraser.init();
-		}, false);
-	</script>
+<canvas id="canvas"></canvas>
+<input id="uploadImage" type="file">
+<div data-erased="false" id="stateErased"></div>
+<button id="submit">Envoyer</button>
+<button id="download">Download</button>
+<div data-image-erased=""></div>
+<script src="./js/eraser_custom.js"></script>
+<script>
+    let canvas = document.getElementById('canvas')
+    const buttonSubmit = document.getElementById("submit")
+    buttonSubmit.addEventListener("click", e => {
+        e.preventDefault()
+
+        const file = document.getElementById("uploadImage").files[0]
+        let url = window.URL || window.webkitURL
+        const image = url.createObjectURL(file)
+
+        const canvas = document.querySelector('#canvas'),
+            eraser = new Eraser(canvas, image);
+        eraser.init();
+        //
+        document.querySelector('#stateErased')
+            .setAttribute('data-erased', "true")
+    })
+
+    let downloadButton = document.querySelector('button#download')
+    downloadButton.addEventListener('click', (e) => {
+        e.preventDefault()
+
+        // Download canvas like an image (png, jog)
+        const div = document.querySelector('[data-image-erased]')
+        let image = canvas.toDataURL("image/png")
+        div.setAttribute('data-image-erased', image)
+    })
+</script>
 </body>
 </html>
