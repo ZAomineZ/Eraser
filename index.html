@@ -55,7 +55,7 @@
     downloadButton.addEventListener('click', (e) => {
         e.preventDefault()
 
-        // Download canvas like an image (png, jog)
+        // Download canvas like an image (png, jpg)
         const div = document.querySelector('[data-image-erased]')
         let image = canvas.toDataURL("image/png")
         div.setAttribute('data-image-erased', image)
