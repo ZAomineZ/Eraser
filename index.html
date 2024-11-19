@@ -44,7 +44,12 @@
         const image = url.createObjectURL(file)
 
         const canvas = document.querySelector('#canvas'),
-            eraser = new Eraser(canvas, image);
+            eraser = new Eraser(canvas, image, {
+                "tap_start_x1": 400,
+                "tap_start_y1": 30,
+                "tap_move_x2": 900,
+                "tap_move_y2": 25
+            });
         eraser.init();
         //
         document.querySelector('#stateErased')
